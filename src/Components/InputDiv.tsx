@@ -1,17 +1,29 @@
 import React, { FunctionComponent,useRef } from "react";
+import Tasks from "./Tasks";
 
 const InputDiv: FunctionComponent = () => {
 
     const getTask = useRef<HTMLInputElement>(null);
     const getDeadline = useRef<HTMLInputElement>(null);
 
-    function AddTaskHandler(e: React.FormEvent<HTMLFormElement>): void {
+    function AddTaskHandler(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         const Task = getTask.current?.value;
         const Deadline = getDeadline.current?.value;
 
-        console.log(Task, Deadline)
+        const taskObject = {
+            task: Task,
+            deadline: Deadline
+        }
+
+        fetch("https://react-todolist-a0421-default-rtdb.firebaseio.com/todos.json", {
+            method: "POST",
+            body: JSON.stringify(taskObject),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
     }
  
 
